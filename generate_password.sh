@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+#
+#   This script generates a secure password using english diceware word list
+#
+
 echo 'How many words do you want your password to consist of?'
 while true; do
     read l

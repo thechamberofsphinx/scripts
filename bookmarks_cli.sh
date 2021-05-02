@@ -10,6 +10,8 @@
 bmarks=/tmp/bookmarks
 touch $bmarks
 
+bmarks_num=`grep Title $bmarks | wc -l`
+
 prompt=">> "
 
 echo "Welcome to bookmarks_cli. To see available commands, type 'help'"
@@ -19,15 +21,23 @@ while true; do
         cp)
             printf "Which bookmark to copy?\n"
             read num
-            grep URL $bmarks | sed "$num"'q;d' | awk '{printf $2}' | xclip -se c -i
-            printf "Bookmark copied to clipboard!\n"
+            if [ "$num" -le "$bmarks_num" ]; then
+                grep URL $bmarks | sed "$num"'q;d' | awk '{printf $2}' | xclip -se c -i
+                printf "Bookmark copied to clipboard!\n"
+            else
+                printf "No such bookmark!\n"
+            fi
             ;;
         d)
             printf "Which bookmark to delete?\n"
             read num
-            line=`grep -n Title $bmarks | sed "$num"'q;d' | sed 's/:.*//'`
-            sed -i "$line"'d' $bmarks
-            sed -i "$line"'d' $bmarks
+            if [ "$num" -le "$bmarks_num" ]; then
+                line=`grep -n Title $bmarks | sed "$num"'q;d' | sed 's/:.*//'`
+                sed -i "$line"'d' $bmarks
+                sed -i "$line"'d' $bmarks
+            else
+                printf "No such bookmark!\n"
+            fi
             ;;
         h | help)
             printf "Commands:\n"
@@ -50,6 +60,7 @@ while true; do
             read -p "URL: " url
             printf "Title: $title\n" >> $bmarks
             printf "URL: $url\n" >> $bmarks 
+            bmarks_num=$((bmarks_num+1))
             printf "Bookmark created!\n"
             ;;
         q | quit)

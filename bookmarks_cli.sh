@@ -60,7 +60,7 @@ while true; do
             read -p "URL: " url
             printf "Title: $title\n" >> $bmarks
             printf "URL: $url\n" >> $bmarks 
-            bmarks_num=$((bmarks_num+1))
+            ((bmarks_num++))
             printf "Bookmark created!\n"
             ;;
         q | quit)

@@ -21,7 +21,7 @@ while true; do
         cp)
             printf "Which bookmark to copy?\n"
             read num
-            if [ "$num" -le "$bmarks_num" ]; then
+            if [ "$num" -le "$bmarks_num" ] && [ "$num" -gt 0 ]; then
                 grep URL $bmarks | sed "$num"'q;d' | awk '{printf $2}' | xclip -se c -i
                 printf "Bookmark copied to clipboard!\n"
             else
@@ -31,7 +31,7 @@ while true; do
         d)
             printf "Which bookmark to delete?\n"
             read num
-            if [ "$num" -le "$bmarks_num" ]; then
+            if [ "$num" -le "$bmarks_num" ] && [ "$num" -gt 0 ]; then
                 line=`grep -n Title $bmarks | sed "$num"'q;d' | sed 's/:.*//'`
                 sed -i "$line"'d' $bmarks
                 sed -i "$line"'d' $bmarks
